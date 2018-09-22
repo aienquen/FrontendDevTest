@@ -14,22 +14,199 @@
     <script src="js/jquery.ui.touch-punch.min.js"></script>
     <script>
         $(function () {
+            const canvas = $('canvas')[0];
+            const canvasWidth = canvas.getAttribute('width');
+            const canvasHeight = canvas.getAttribute('height');
 
+            const clockCenterX = canvasWidth / 2;
+            const clockCenterY = canvasHeight / 2 + 1;
+            const fillRadius1 = 223;
+            const fillRadius2 = 250;
+
+            const ctx = canvas.getContext('2d');
+            ctx.lineWidth = 25;
+
+            // Creates function that renders arc part.
+            function drawArc(properties, next) {
+                properties = properties || {};
+
+                const timeOfDrawing = properties.time * 1000 || 1000; // 1 second by default
+                const delayBeforeDrawing = properties.delay * 1000 || 0; // 0 seconds by default
+
+                const radius = properties.radius || fillRadius1;
+                const centerX = properties.centerX || clockCenterX;
+                const centerY = properties.centerY || clockCenterY;
+
+                // arc's degrees in radians
+                const radianFrom = properties.radianFrom || 0;
+                const radianTo = properties.radianTo || Math.PI * 2;
+
+                const color = properties.color || 'black';
+
+                const initialTime = Date.now() + delayBeforeDrawing;
+                const timeRange = timeOfDrawing;
+                const endTime = initialTime + timeRange;
+
+                const radianRange = radianTo - radianFrom;
+                let lastRadians = radianFrom;
+
+                ctx.strokeStyle = color;
+
+                setTimeout(function () {
+                    function draw() {
+                        const currentTime = Date.now();
+                        const timeDiff = currentTime - initialTime;
+                        const diffPercentage = timeDiff / timeRange;
+
+                        let radians = radianFrom + radianRange * diffPercentage;
+
+                        // Guarantees correct drawing of an arc
+                        if (lastRadians > radians) {
+                            const temp = lastRadians;
+
+                            lastRadians = radians;
+                            radians = temp;
+                        }
+
+                        ctx.beginPath()
+                        ctx.arc(centerX, centerY, radius, lastRadians, radians);
+                        ctx.stroke();
+
+                        lastRadians = radians - Math.PI / 6 / 36;
+
+                        if (currentTime < endTime) {
+                            requestAnimationFrame(draw);
+                        } else {
+                            // next is a continuation
+                            if (next) {
+                                next();
+                            }
+                        }
+                    }
+
+                    requestAnimationFrame(draw);
+                }, delayBeforeDrawing);
+            }
+
+            // Generates arc parts to render.
+            function generateArcs(animationTime) {
+                const hourRadians = Math.PI / 6;
+                const hourTime = animationTime / 15;
+
+                return [
+                    {
+                        time: hourTime * 1 / 2,
+                        radianFrom: hourRadians * 8,
+                        radianTo: hourRadians * 9,
+                        color: '#885588',
+                    },
+                    {
+                        time: hourTime * (7 - 1 / 2),
+                        radianFrom: hourRadians * 9,
+                        radianTo: hourRadians * 16,
+                        color: '#ffccff',
+                    },
+                    {
+                        time: hourTime * 11 / 12,
+                        radianFrom: hourRadians * 16,
+                        radianTo: hourRadians * (16 + 11 / 12),
+                        color: '#aa88aa',
+                    },
+                    {
+                        time: hourTime * 2 / 12,
+                        radianFrom: hourRadians * (16 + 11 / 12),
+                        radianTo: hourRadians * (17 + 1 / 12),
+                        color: '#551155',
+                    },
+                    {
+                        time: hourTime * 11 / 12,
+                        radianFrom: hourRadians * (17 + 1 / 12),
+                        radianTo: hourRadians * 18,
+                        color: '#cc88cc',
+                    },
+                    {
+                        time: hourTime,
+                        radianFrom: hourRadians * 18,
+                        radianTo: hourRadians * 19,
+                        color: '#994499',
+                    },
+                    {
+                        time: hourTime * 2,
+                        delay: hourTime * 2,
+                        radianFrom: hourRadians * 21,
+                        radianTo: hourRadians * 23,
+                        color: '#552255',
+                        radius: fillRadius2,
+                    },
+                    {
+                        time: hourTime,
+                        radianFrom: hourRadians * 23,
+                        radianTo: hourRadians * 24,
+                        color: '#441144',
+                        radius: fillRadius2,
+                    },
+                ];
+            }
+
+            // Makes a chain of functions that renders arc parts
+            // to call it exactly one after another through continuations.
+            function drawCircles(animationTime) {
+                const arcs = generateArcs(animationTime);
+
+                let drawFunction = null;
+
+                // making chain of function invocations
+                for (let i = arcs.length - 1; i >= 0; i--) {
+                    const properties = arcs[i];
+
+                    // Closure is need to capture previously created function
+                    drawFunction = (function (drawFunction) {
+                        return function () {
+                            drawArc(properties, drawFunction);
+                        }
+                    })(drawFunction);
+                }
+
+                drawFunction();
+            }
+
+            // Executes animations
+            function animate(animationTime) {
+                $('.arr_hour').css({
+                    'transition': 'all',
+                    'transition-duration': `${animationTime}s`,
+                    'transition-timing-function': 'linear',
+                    'transform': 'rotate(450deg)', // 15 hours is one and one fourth full rotation, 4/3 * 360 = 450 degrees
+                    'transform-origin': 'right center',
+                })
+
+                $('.arr_minute').css({
+                    'transition': 'all',
+                    'transition-duration': `${animationTime}s`,
+                    'transition-timing-function': 'linear',
+                    'transform': 'rotate(5400deg)', // 15 full rotations, 15 * 36 = 5400 degrees
+                    'transform-origin': 'bottom center',
+                })
+
+                drawCircles(animationTime);
+            }
+
+            animate(5);
         });
     </script>
 </head>
 
 <body>
-    <div class="wrapper">
-        <div class="Stage_base">
-            <div class="canvas_area">
-                <canvas id="canvas_int" width="544" height="544"></canvas>
-            </div>
-            <div class="arrow_box">
-                <div class="arr_hour"></div>
-                <div class="arr_minute"></div>
-            </div>
+<div class="wrapper">
+    <div class="Stage_base">
+        <div class="canvas_area">
+            <canvas id="canvas_int" width="544" height="544"></canvas>
+        </div>
+        <div class="arrow_box">
+            <div class="arr_hour"></div>
+            <div class="arr_minute"></div>
         </div>
     </div>
+</div>
 </body>
 </html>

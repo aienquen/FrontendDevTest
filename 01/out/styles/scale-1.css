@@ -1,0 +1,24 @@
+.container__label-1 {
+    position: relative;
+    top: -459px;
+    left: 69px;
+    width: 96px;
+    height: 51px;
+}
+
+.container__value-1 {
+    position: relative;
+    top: -486px;
+    left: 183px;
+}
+
+.container__value-1__img-marker {
+    position: relative;
+    left: 302px;
+}
+
+.container__value-1__value-text {
+    position: relative;
+    top: -72px;
+    left: 313px;
+}

@@ -9,31 +9,56 @@
     <title></title>
     <link href="css/main.css" rel="stylesheet">
     <style type="text/css">
-        
-	#slide-index-background {
-		 left: 0px;
-		 top: 0px;
-		 position: relative;
-		 margin: 0 auto;
-		 overflow: hidden;
-		 z-index: 0;
-		 width:1024px;
-		 height:768px;
-	}
+
+        #slide-index-background {
+            left: 0px;
+            top: 0px;
+            position: relative;
+            margin: 0 auto;
+            overflow: hidden;
+            z-index: 0;
+            width: 1024px;
+            height: 768px;
+        }
 
     </style>
 </head>
 <body>
-    <div id="slide-index-background">
-        <canvas id='screen' width='1024' height='768'></canvas>
-    </div>  
-    <script src="js/jquery-2.1.1.min.js"></script>
-    <script src="js/jquery-ui-1.10.4.min.js"></script>
-    <script src="js/jquery.ui.touch-punch.min.js"></script>
-    <script>
-        $(function () {
-           
-        });
-    </script>
+<div id="slide-index-background">
+    <canvas id='screen' width='1024' height='768'></canvas>
+</div>
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/jquery-ui-1.10.4.min.js"></script>
+<script src="js/jquery.ui.touch-punch.min.js"></script>
+<script>
+    $(function () {
+        $('#screen').each(function (_, canvas) {
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = '#ceceee';
+            ctx.fillRect(0, 0, 1024, 768);
+
+            ctx.fillStyle = 'black';
+            ctx.font = "30px Arial";
+            ctx.fillText('Hello, cute World!', 100, 100);
+
+            ctx.strokeStyle = 'black';
+            ctx.beginPath();
+            ctx.moveTo(80, 50);
+            ctx.lineTo(80, 130);
+            ctx.lineTo(355, 130);
+            ctx.lineTo(355, 50);
+            ctx.lineTo(80, 50);
+            ctx.stroke();
+
+            ctx.strokeStyle = 'gold';
+            ctx.lineWidth = 25;
+            ctx.beginPath();
+            ctx.moveTo(200, 200);
+            ctx.lineTo(400, 400);
+            ctx.stroke();
+        })
+    });
+</script>
 </body>
 </html>

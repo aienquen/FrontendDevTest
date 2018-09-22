@@ -8,24 +8,109 @@
     <title></title>
 </head>
 <body>
-    <div class="bg"></div>
-    <div class="content">
-        <img src="images/img19_6.png" class="img6" width="636">
-        <img src="images/img19_4.png" class="img4 gift">
-        <img src="images/img19_5.png" class="img5 gift">
-        <img src="images/img19_3.png" class="img3 gift">
-        <img src="images/img19_2.png" class="img2 gift">
-        <img src="images/img19_1.png" class="img1" width="566">
-        <div class="img7"></div>
-        <div class="img8"></div>
-    </div>
-    <script src="js/jquery-1.8.1.min.js"></script>
-    <script src="js/jquery-ui.min.js"></script>
-    <script src="js/jquery.ui.touch-punch.min.js"></script>
-    <script>
-        $(function () {
-
+<div class="bg"></div>
+<div class="content">
+    <img src="images/img19_6.png" class="img6" width="636">
+    <img src="images/img19_4.png" class="img4 gift">
+    <img src="images/img19_5.png" class="img5 gift">
+    <img src="images/img19_3.png" class="img3 gift">
+    <img src="images/img19_2.png" class="img2 gift">
+    <img src="images/img19_1.png" class="img1" width="566">
+    <div class="img7"></div>
+    <div class="img8"></div>
+</div>
+<script src="js/jquery-1.8.1.min.js"></script>
+<script src="js/jquery-ui.min.js"></script>
+<script src="js/jquery.ui.touch-punch.min.js"></script>
+<script>
+    // Plugin that moves selection through Y-axis
+    jQuery.fn.moveY = function (dy) {
+        $(this).css({
+            'transition': 'all',
+            'transition-duration': `0.5s`,
+            '-webkit-transform': `translate(0, ${dy}px)`,
+            '-ms-transform': `translate(0, ${dy}px)`,
+            'transform': `translate(0, ${dy}px)`,
         });
-    </script>
+
+        return $(this);
+    };
+
+    $(function () {
+        const giftsInitialPositions = [];
+        let remainingGiftsCount = 4;
+
+        // Make blocks visible
+        function animate() {
+            $('.img7').css({
+                'transition': 'all',
+                'transition-duration': '1s',
+                'left': '0px',
+            })
+
+            $('.img8').css(
+                {
+                    'display': 'block',
+                    'position': 'absolute',
+                    'left': '500px',
+                    'top': '300px',
+                }
+            )
+        }
+
+        // Hides element
+        function hide(element) {
+            $(element).moveY(1000);
+            remainingGiftsCount--;
+
+            if (remainingGiftsCount === 0) {
+                animate();
+            }
+        }
+
+        // Moves element to the initial position
+        function restore(element) {
+            const {
+                top, left
+            } = giftsInitialPositions.filter(function (pos) {
+                return pos.element === element;
+            })[0];
+
+            element.style.left = `${left}px`;
+            element.style.top = `${top}px`;
+            element.style.transition = 'all';
+            element.style.transitionDuration = '0.25s';
+        }
+
+        $('.gift').draggable({
+            create: function (event) {
+                const element = event.target;
+                const {
+                    left, top
+                } = $(element).position();
+
+                giftsInitialPositions.push({
+                    element, left, top
+                });
+            },
+            start: function (event) {
+                event.target.style.transition = 'none';
+            },
+            stop: function (event) {
+                let target = event.target;
+
+                const {
+                    left
+                } = $(target).position();
+
+                if (left > 63 && left < 308) {
+                    hide(target);
+                } else {
+                    restore(target);
+                }
+            },
+        });
+    });
+</script>
 </body>
 </html>

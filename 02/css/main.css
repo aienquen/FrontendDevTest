@@ -92,7 +92,7 @@ blockquote {
 blockquote:before,
 blockquote:after {
     content: '';
-    content: none;
+    /*content: none;*/
 }
 
 table,
@@ -119,7 +119,7 @@ td {
 }
 
 body {
-    height: 1024px;
+    width: 1024px;
     height: 768px;
     overflow: hidden;
     position: relative;
@@ -133,5 +133,107 @@ body {
     position: absolute;
     left: 0px;
     top: 0px;
-    background-color: aliceblue
+    background-color: aliceblue;
+}
+
+.container {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(6, 100px);
+    grid-template-rows: repeat(4, 100px);
+    grid-template-areas:
+            "css-opacity css-rotate start-css start-jquery jquery-opacity jquery-rotate"
+            "css-opacity css-rotate reset-css reset-jquery jquery-opacity jquery-rotate"
+            "css-scale   css-move   X         X            jquery-scale   jquery-move"
+            "css-scale   css-move   X         X            jquery-scale   jquery-move";
+}
+
+.block {
+    cursor: pointer;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    text-align: center;
+    transition: all;
+    transition-duration: 1s;
+}
+
+.block__text {
+    display: block;
+}
+
+.block-css-opacity {
+    background-color: lightblue;
+    grid-area: css-opacity;
+}
+
+.block-css-opacity.animate {
+    opacity: 0;
+}
+
+.block-css-rotate {
+    background-color: lightcoral;
+    grid-area: css-rotate;
+}
+
+.block-css-rotate.animate {
+    transform: rotate(360deg);
+}
+
+.block-css-scale {
+    background-color: lightcyan;
+    grid-area: css-scale;
+}
+
+.block-css-scale.animate {
+    transform: scale(1.5);
+}
+
+.block-css-move {
+    background-color: lightgray;
+    grid-area: css-move;
+}
+
+.block-css-move.animate {
+    transform: translate3d(100px, 100px, 0px);
+}
+
+.block-start-css {
+    background-color: lightgreen;
+    grid-area: start-css;
+}
+
+.block-reset-css {
+    background-color: lightyellow;
+    grid-area: reset-css;
+}
+
+.block-start-jquery {
+    background-color: lightgreen;
+    grid-area: start-jquery;
+}
+
+.block-reset-jquery {
+    background-color: lightyellow;
+    grid-area: reset-jquery;
+}
+
+.block-jquery-opacity {
+    background-color: lightskyblue;
+    grid-area: jquery-opacity;
+}
+
+.block-jquery-rotate {
+    background-color: lightseagreen;
+    grid-area: jquery-rotate;
+}
+
+.block-jquery-scale {
+    background-color: lightslategray;
+    grid-area: jquery-scale;
+}
+
+.block-jquery-move {
+    background-color: lightsteelblue;
+    grid-area: jquery-move;
 }

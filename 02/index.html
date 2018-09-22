@@ -7,20 +7,142 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <title></title>
-    <link href="css/main.css" rel="stylesheet">>
+    <link href="css/main.css" rel="stylesheet">
+    >
 </head>
 <body>
-    <div id="background">
-
+<div id="background">
+    <div class="container">
+        <div class="block block-css-opacity">
+            <div class="block__text">
+                CSS Transform Opacity
+            </div>
+        </div>
+        <div class="block block-css-rotate">
+            <div class="block__text">
+                CSS Transform Rotate
+            </div>
+        </div>
+        <div class="block block-css-scale">
+            <div class="block__text">
+                CSS Transform Scale
+            </div>
+        </div>
+        <div class="block block-css-move">
+            <div class="block__text">
+                CSS Transform Move
+            </div>
+        </div>
+        <div class="block block-min block-start-css">
+            <div class="block__text">
+                Start CSS
+            </div>
+        </div>
+        <div class="block block-min block-reset-css">
+            <div class="block__text">
+                Reset CSS
+            </div>
+        </div>
+        <div class="block block-min block-start-jquery">
+            <div class="block__text">
+                Start Jquery
+            </div>
+        </div>
+        <div class="block block-min block-reset-jquery">
+            <div class="block__text">
+                Reset Jquery
+            </div>
+        </div>
+        <div class="block block-jquery-opacity">
+            <div class="block__text">
+                Jquery Opacity
+            </div>
+        </div>
+        <div class="block block-jquery-rotate">
+            <div class="block__text">
+                Jquery Rotate
+            </div>
+        </div>
+        <div class="block block-jquery-scale">
+            <div class="block__text">
+                Jquery Scale
+            </div>
+        </div>
+        <div class="block block-jquery-move">
+            <div class="block__text">
+                Jquery Move
+            </div>
+        </div>
     </div>
-    <script src="js/jquery-2.1.1.min.js"></script>
-    <script src="js/jquery-ui-1.10.4.min.js"></script>
-    <script src="js/jquery.ui.touch-punch.min.js"></script>
-    <script>
-        $(function () {
-           
+</div>
+
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/jquery-ui-1.10.4.min.js"></script>
+<script src="js/jquery.ui.touch-punch.min.js"></script>
+<script>
+    // Plugin to move selections
+    jQuery.fn.move = function (dx, dy) {
+        $(this).css({
+            '-webkit-transform': `translate(${dx}px,${dy}px)`,
+            '-ms-transform': `translate(${dx}px,${dy}px)`,
+            'transform': `translate(${dx}px,${dy}px)`,
         });
-    </script>
+
+        return $(this);
+    };
+
+    // Plugin to rotate selections
+    jQuery.fn.rotate = function (degrees) {
+        $(this).css({
+            '-webkit-transform': `rotate(${degrees}deg)`,
+            '-ms-transform': `rotate(${degrees}deg)`,
+            'transform': `rotate(${degrees}deg)`,
+        });
+
+        return $(this);
+    };
+
+    // Plugin to scale selections
+    jQuery.fn.scale = function (factor) {
+        $(this).css({
+            '-webkit-transform': `scale(${factor})`,
+            '-ms-transform': `scale(${factor})`,
+            'transform': `scale(${factor})`,
+        });
+
+        return $(this);
+    };
+
+    $(function () {
+        $('.block-start-css').click(() => {
+            $('.block-css-opacity').addClass('animate');
+            $('.block-css-move').addClass('animate');
+            $('.block-css-rotate').addClass('animate');
+            $('.block-css-scale').addClass('animate');
+        })
+
+        $('.block-reset-css').click(() => {
+            $('.block-css-opacity').removeClass('animate');
+            $('.block-css-move').removeClass('animate');
+            $('.block-css-rotate').removeClass('animate');
+            $('.block-css-scale').removeClass('animate');
+        })
+
+        $('.block-start-jquery').click(() => {
+            $('.block-jquery-opacity').fadeTo(1000, 0);
+            $('.block-jquery-move').move(100, 100);
+            $('.block-jquery-rotate').rotate(360);
+            $('.block-jquery-scale').scale(1.5);
+        })
+
+        $('.block-reset-jquery').click(() => {
+            $('.block-jquery-opacity').fadeTo(1000, 1);
+            $('.block-jquery-move').move(0, 0);
+            $('.block-jquery-rotate').rotate(0);
+            $('.block-jquery-scale').scale(1);
+        })
+    });
+</script>
 </body>
 
 </html>

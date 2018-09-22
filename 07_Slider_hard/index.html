@@ -14,6 +14,32 @@
     <script src="js/jquery.ui.touch-punch.min.js"></script>
     <script>
         $(function () {
+            const slideHeight = 107;
+            const peopleHeight = 60;
+
+            function isInTwoSliders(slideTopOffset, peopleTopOffset) {
+                return (peopleTopOffset >= slideTopOffset) &&
+                    (peopleTopOffset + peopleHeight <= slideTopOffset + slideHeight)
+            }
+
+            function updatePeopleColor(slideTopOffset) {
+                $('li.yellow').each((_, people) => {
+                    const peopleTopOffset = $(people).position().top;
+
+                    if (isInTwoSliders(slideTopOffset, peopleTopOffset)) {
+                        $(people).addClass('red');
+                    } else {
+                        $(people).removeClass('red');
+                    }
+                })
+            }
+            
+            $('.drag_red_wrapper').draggable({
+                axis: 'y',
+                drag: function (event, ui) {
+                    updatePeopleColor(ui.position.top);
+                },
+            })
         });
     </script>
 </head>

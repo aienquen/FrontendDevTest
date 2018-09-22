@@ -1,0 +1,25 @@
+.container {
+    background-image: url("../images/img_background.png");
+    width: 1024px;
+    height: 768px;
+    margin: auto;
+}
+
+/* Generic */
+
+.label {
+    color: #d0691c;
+    font-family: "Arial Narrow",sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+}
+
+.label.label-big {
+    font-size: 28px;
+    text-transform: uppercase;
+}
+
+.value {
+    width: 355px;
+    height: 31px;
+}

@@ -1,0 +1,33 @@
+.img-scale-empty {
+    position: absolute;
+    left: 0;
+    top: 7px;
+
+    z-index: 1;
+}
+
+.img-scale {
+    position: absolute;
+    top: 7px;
+    z-index: 2;
+}
+
+.img-scale-bullits {
+    position: absolute;
+    left: 0;
+    top: 7px;
+    z-index: 3;
+}
+
+.img-marker {
+    z-index: 4;
+}
+
+.value-text {
+    width: 22px;
+    height: 20px;
+    color: #d0691c;
+    font-family: "Arial Narrow";
+    font-size: 28px;
+    font-weight: 400;
+}

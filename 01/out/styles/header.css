@@ -1,0 +1,21 @@
+/* Concrete */
+.container__header {
+    position: relative;
+    top: 39px;
+    left: 70px;
+
+    width: 750px;
+    height: 66px;
+    color: #2d509b;
+
+    font-family: "Arial Narrow",sans-serif;
+    font-size: 32px;
+    font-weight: 400;
+}
+
+.container__topline {
+    position: relative;
+    top: -66px;
+    left: 0;
+}
+
